@@ -10,6 +10,8 @@
 # testing
 /coverage
 
+/01-starting-project/node_modules
+
 # production
 /build
 
