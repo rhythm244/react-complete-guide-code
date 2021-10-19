@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-const useInput = (validateValue) => {
+const useInputThong = (validateFn) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const valueIsValid = validateValue(enteredValue);
+  const valueIsValid = validateFn(enteredValue);
   const hasError = !valueIsValid && isTouched;
 
-  const valueChangeHandler = (event) => {
-    setEnteredValue(event.target.value);
+  const inputChangehandler = (e) => {
+    setEnteredValue(e.target.value);
   };
 
-  const inputBlurHandler = (event) => {
+  const inputBlurHandler = (e) => {
     setIsTouched(true);
   };
 
@@ -24,10 +24,10 @@ const useInput = (validateValue) => {
     value: enteredValue,
     isValid: valueIsValid,
     hasError,
-    valueChangeHandler,
+    inputChangehandler,
     inputBlurHandler,
     reset,
   };
 };
 
-export default useInput;
+export default useInputThong;
