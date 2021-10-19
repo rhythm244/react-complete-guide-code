@@ -1,36 +1,36 @@
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import classes from "./AvailableMeals.module.css";
-
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import useFetch from "../../hooks/useFetch";
+import { useEffect, useState } from "react";
 
 const AvailableMeals = () => {
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  const [meals, setMeals] = useState([]);
+  const { isLoading, error, sendRequest: fetchMeals } = useFetch();
+
+  useEffect(() => {
+    const transformTasks = (tasksObj) => {
+      // console.log(tasksObj);
+
+      const loadedMeals = [];
+
+      for (const mealsKey in tasksObj) {
+        loadedMeals.push({ id: mealsKey, ...tasksObj[mealsKey] });
+      }
+
+      setMeals(loadedMeals);
+    };
+
+    //มี key คือ url, method, header, body
+    fetchMeals(
+      {
+        url: "https://react-course-udemy-f670c-default-rtdb.asia-southeast1.firebasedatabase.app/foodApp/Meals.json",
+      },
+      transformTasks
+    );
+  }, [fetchMeals]);
+
+  const mealsList = meals.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}
@@ -39,6 +39,14 @@ const AvailableMeals = () => {
       price={meal.price}
     />
   ));
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Something wrong.</p>;
+  }
 
   return (
     <section className={classes.meals}>
