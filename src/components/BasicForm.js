@@ -76,6 +76,7 @@ const BasicForm = (props) => {
             type="text"
             id="name"
             onChange={nameInputChangeHandler}
+            //The onblur event occurs when an object loses focus.
             onBlur={nameInputBlurHandler}
             value={firstName}
           />
