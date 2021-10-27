@@ -69,6 +69,7 @@ const Cart = (props) => {
     postUserDate(requestConfig, {});
     //setIsSubmitting(false)
     setDidsubmit(true);
+    cartCtx.clearCart();
   };
 
   const modalActions = (
