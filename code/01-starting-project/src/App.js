@@ -5,14 +5,59 @@ import Modal from "./components/Modal/Modal";
 import Backdrop from "./components/Backdrop/Backdrop";
 import List from "./components/List/List";
 
+import Transition from "react-transition-group/Transition";
+
+
 class App extends Component {
+  state = {
+    modalIsOpen: false,
+    showBlock: false,
+  };
+
+  showModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
+  toggleHanlder = () => {
+    this.setState((prev) => ({ showBlock: !prev.showBlock }));
+  };
+
   render() {
     return (
       <div className="App">
         <h1>React Animations</h1>
-        <Modal />
-        <Backdrop />
-        <button className="Button">Open Modal</button>
+        <button className="Button" onClick={this.toggleHanlder}>
+          Toggle
+        </button>
+        <Transition
+          in={this.state.showBlock}
+          timeout={1000}
+          mountOnEnter
+          unmountOnExit
+        >
+          {(state) => (
+            <div
+              style={{
+                backgroundColor: "red",
+                width: 100,
+                height: 100,
+                margin: "auto",
+                transition: "opacity 1s ease-out",
+                opacity: state === "exiting" ? 0 : 1,
+              }}
+            ></div>
+          )}
+        </Transition>
+        <Modal show={this.state.modalIsOpen} closed={this.closeModal} />}
+        {this.state.modalIsOpen ? (
+          <Backdrop show closed={this.closeModal} />
+        ) : null}
+        <button type="button" onClick={this.showModal} className="Button">
+          Open Modal
+        </button>
         <h3>Animating Lists</h3>
         <List />
       </div>
